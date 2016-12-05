@@ -61,10 +61,10 @@ namespace Gvr.Internal {
     }
 
     public override void UpdateState() {
-      ProcessEvents();
-      GetHeadPose(headData);
-      ExtractMatrix(ref headView, headData);
-      headPose.SetRightHanded(headView.inverse);
+      // ProcessEvents();
+      // GetHeadPose(headData);
+      // ExtractMatrix(ref headView, headData);
+      // headPose.SetRightHanded(headView.inverse);
     }
 
     public override void UpdateScreenData() {
