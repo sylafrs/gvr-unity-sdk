@@ -116,10 +116,13 @@ public class GvrHead : MonoBehaviour
 
 		if (trackRotation)
 		{
-			//Quaternion rot = GvrViewer.Instance.HeadPose.Orientation;
 			Quaternion rot;
-			SensorFusionManager.UpdateQuaternion(out rot);
 
+#if USE_SENSOR_FUSION
+			SensorFusionManager.UpdateQuaternion(out rot);
+#else
+			rot = GvrViewer.Instance.HeadPose.Orientation;
+#endif
 			//Debug.Log("gvr rot (euler) = " + rot.eulerAngles);
 			//Debug.Log("input accel = " + Input.acceleration);
 			//Debug.Log("gyro accel = " + Input.gyro.userAcceleration);
