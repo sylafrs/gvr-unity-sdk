@@ -342,8 +342,8 @@ public class GazeInputModule : BaseInputModule {
 #if UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR) && UNITY_ANDROID
     // GVR native integration is supported.
     if (VRSettings.enabled) {
-      viewportWidth = VRSettings.eyeTextureWidth;
-      viewportHeight = VRSettings.eyeTextureHeight;
+    //  viewportWidth = VRSettings.eyeTextureWidth;
+    //  viewportHeight = VRSettings.eyeTextureHeight;
     }
 #endif  // UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_EDITOR) && UNITY_ANDROID
 
