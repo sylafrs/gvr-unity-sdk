@@ -245,6 +245,10 @@ public class StereoController : MonoBehaviour {
     AddStereoRig();
   }
 
+	public Canvas leftCanvas;
+	public Canvas rightCanvas;
+	public Material fadeMaterial;
+
   /// Helper routine for creation of a stereo rig.  Used by the
   /// custom editor for this class, or to build the rig at runtime.
   public void AddStereoRig() {
@@ -275,24 +279,35 @@ public class StereoController : MonoBehaviour {
     }
   }
 
-  // Helper routine for creation of a stereo eye.
-  private void CreateEye(GvrViewer.Eye eye) {
-    string nm = name + (eye == GvrViewer.Eye.Left ? " Left" : " Right");
-    GameObject go = new GameObject(nm);
-    go.transform.SetParent(transform, false);
-    go.AddComponent<Camera>().enabled = false;
-    var GvrEye = go.AddComponent<GvrEye>();
-    GvrEye.eye = eye;
-    GvrEye.CopyCameraAndMakeSideBySide(this);
-  }
+	// Helper routine for creation of a stereo eye.
+	private void CreateEye(GvrViewer.Eye eye)
+	{
+		string nm = name + (eye == GvrViewer.Eye.Left ? " Left" : " Right");
+		GameObject go = new GameObject(nm);
+		go.transform.SetParent(transform, false);
+		var cam = go.AddComponent<Camera>();
+		cam.enabled = false;
+		var GvrEye = go.AddComponent<GvrEye>();
+		GvrEye.eye = eye;
+		GvrEye.CopyCameraAndMakeSideBySide(this);
+
+		var fader = go.AddComponent<FadeCamera>();
+		fader.fadeMaterial = fadeMaterial;
+
+		if (rightCanvas && eye == GvrViewer.Eye.Right)
+			rightCanvas.worldCamera = cam;
+
+		if (leftCanvas && eye == GvrViewer.Eye.Left)
+			leftCanvas.worldCamera = cam;
+	}
 #endif  // !UNITY_HAS_GOOGLEVR || UNITY_EDITOR
 
-  /// Compute the position of one of the stereo eye cameras.  Accounts for both
-  /// FOV matching and stereo comfort, if those features are enabled.  The input is
-  /// the [1,1] entry of the eye camera's projection matrix, representing the vertical
-  /// field of view, and the overall scale being applied to the Z axis.  Returns the
-  /// position of the stereo eye camera in local coordinates.
-  public Vector3 ComputeStereoEyePosition(GvrViewer.Eye eye, float proj11, float zScale) {
+	/// Compute the position of one of the stereo eye cameras.  Accounts for both
+	/// FOV matching and stereo comfort, if those features are enabled.  The input is
+	/// the [1,1] entry of the eye camera's projection matrix, representing the vertical
+	/// field of view, and the overall scale being applied to the Z axis.  Returns the
+	/// position of the stereo eye camera in local coordinates.
+	public Vector3 ComputeStereoEyePosition(GvrViewer.Eye eye, float proj11, float zScale) {
     if (centerOfInterest == null || !centerOfInterest.gameObject.activeInHierarchy) {
       return GvrViewer.Instance.EyePose(eye).Position * stereoMultiplier;
     }
