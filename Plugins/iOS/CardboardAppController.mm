@@ -46,7 +46,7 @@ extern int UnityGetAudioEffectDefinitions(UnityAudioEffectDefinition*** definiti
   UnityRegisterViewControllerListener(self);
   UnityRegisterAudioPlugin(UnityGetAudioEffectDefinitions);
   UnityView* unity_view = [super createUnityView];
-  createUiLayer(self, (UIView *)unity_view);
+  //createUiLayer(self, (UIView *)unity_view);
   return unity_view;
 }
 
